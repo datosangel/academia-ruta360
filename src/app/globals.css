@@ -1,0 +1,313 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/**
+ * Paleta de Academia Ruta 360 (colores tomados del logo real).
+ * Se reasignan las escalas «indigo» y «violet» de Tailwind a estos colores,
+ * así todo el interior de la app (dashboards, botones, chat, panel de
+ * administración) queda de marca sin reescribir cada clase una por una.
+ */
+@theme {
+  --color-indigo-50: #eaf1fb;
+  --color-indigo-100: #d3e3f7;
+  --color-indigo-200: #a7c7ef;
+  --color-indigo-300: #6ea3e3;
+  --color-indigo-400: #337ed4;
+  --color-indigo-500: #0a56b8;
+  --color-indigo-600: #013c9a;
+  --color-indigo-700: #01317e;
+  --color-indigo-800: #032863;
+  --color-indigo-900: #051f4d;
+
+  --color-violet-500: #4bc954;
+  --color-violet-600: #3bb546;
+  --color-violet-700: #2f9639;
+  --color-violet-900: #1f6626;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI",
+    Helvetica, Arial, sans-serif;
+}
+
+/* ---------- Landing ---------- */
+
+.font-accent {
+  font-family: var(--font-accent-serif), Georgia, "Times New Roman", serif;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+
+@media (max-width: 768px) {
+  .animate-marquee {
+    animation-duration: 18s;
+  }
+}
+
+/* Rastro de tarjetas que sigue al cursor en la sección final. */
+@keyframes trailFade {
+  0% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+.animate-trail-fade {
+  animation: trailFade 1s ease-out forwards;
+}
+
+/* Sombras en capas: son las que dan la sensación de relieve a los botones. */
+.shadow-btn-primary {
+  box-shadow:
+    0 1px 2px 0 rgba(5, 26, 36, 0.1),
+    0 4px 4px 0 rgba(5, 26, 36, 0.09),
+    0 9px 6px 0 rgba(5, 26, 36, 0.05),
+    0 17px 7px 0 rgba(5, 26, 36, 0.01),
+    inset 0 2px 8px 0 rgba(255, 255, 255, 0.5);
+}
+
+.shadow-btn-secondary {
+  box-shadow:
+    0 0 0 0.5px rgba(0, 0, 0, 0.05),
+    0 4px 30px rgba(0, 0, 0, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .animate-marquee {
+    animation: none !important;
+  }
+  .animate-trail-fade {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}
+
+/* ---------- Pantallas de acceso (login / registro) ---------- */
+
+@keyframes authFadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes authDrift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(20px, -16px) scale(1.06);
+  }
+}
+
+.entry {
+  animation: authFadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.entry-badge {
+  animation-delay: 0.05s;
+}
+.entry-hl1 {
+  animation-delay: 0.15s;
+}
+.entry-hl2 {
+  animation-delay: 0.22s;
+}
+.entry-card {
+  animation-delay: 0.05s;
+}
+.entry-h1 {
+  animation-delay: 0.25s;
+}
+.entry-sub {
+  animation-delay: 0.32s;
+}
+.entry-f1 {
+  animation-delay: 0.4s;
+}
+.entry-f2 {
+  animation-delay: 0.46s;
+}
+.entry-f3 {
+  animation-delay: 0.52s;
+}
+.entry-btn {
+  animation-delay: 0.58s;
+}
+.entry-divider {
+  animation-delay: 0.64s;
+}
+.entry-google {
+  animation-delay: 0.7s;
+}
+.entry-bottom {
+  animation-delay: 0.76s;
+}
+
+.blob {
+  animation: authDrift 10s ease-in-out infinite;
+}
+.blob-b {
+  animation-duration: 13s;
+  animation-delay: -3s;
+}
+.blob-c {
+  animation-duration: 16s;
+  animation-delay: -6s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .entry {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .blob {
+    animation: none !important;
+  }
+}
+
+/* ---------- Blobs decorativos del hero ---------- */
+
+@keyframes heroBlob {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(16px, -20px) scale(1.08);
+  }
+}
+
+@keyframes heroBlobReverse {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-14px, 18px) scale(1.05);
+  }
+}
+
+.animate-hero-blob {
+  animation: heroBlob 9s ease-in-out infinite;
+}
+
+.animate-hero-blob-reverse {
+  animation: heroBlobReverse 11s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-hero-blob,
+  .animate-hero-blob-reverse {
+    animation: none !important;
+  }
+}
+
+/* ---------- Pantalla de carga ---------- */
+
+@keyframes loaderRing {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loaderRingReverse {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes loaderPulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-loader-ring {
+  animation: loaderRing 1.1s linear infinite;
+}
+
+.animate-loader-ring-reverse {
+  animation: loaderRingReverse 0.9s linear infinite;
+}
+
+.animate-loader-pulse {
+  animation: loaderPulse 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-loader-ring,
+  .animate-loader-ring-reverse {
+    animation: none !important;
+  }
+  .animate-loader-pulse {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+}

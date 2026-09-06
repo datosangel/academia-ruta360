@@ -1,0 +1,421 @@
+// Aula Virtual — modelo de datos
+// Cubre: usuarios/roles, cursos, módulos y contenidos, clases virtuales,
+// biblioteca de archivos, evaluaciones, tareas, seguimiento, certificados,
+// comunicación (mensajería, anuncios, foro).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // SQLite para desarrollo local. Al desplegar a un host que necesite
+  // Postgres (Neon, Supabase, Vercel Postgres...), cambiar provider a
+  // "postgresql" y añadir DIRECT_URL en el entorno de producción.
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- 2. Usuarios y roles ----------
+
+enum Role {
+  ADMIN
+  DOCENTE
+  ALUMNO
+}
+
+model User {
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  emailVerified DateTime?
+  passwordHash  String
+  role          Role     @default(ALUMNO)
+  avatarUrl     String?
+  bio           String?
+  phone         String?
+  documentId    String?
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Docente
+  coursesTaught     Course[]           @relation("CourseTeacher")
+  assignmentsGraded Submission[]       @relation("Grader")
+  announcements     Announcement[]
+
+  // Alumno
+  enrollments       Enrollment[]
+  submissions       Submission[]       @relation("Submitter")
+  quizAttempts      QuizAttempt[]
+  certificates      Certificate[]
+  lessonProgress    LessonProgress[]
+
+  // Comunicación
+  sentMessages      Message[]          @relation("Sender")
+  receivedMessages  Message[]          @relation("Recipient")
+  forumPosts        ForumPost[]
+  notifications     Notification[]
+  calendarEvents    CalendarEvent[]
+
+  passwordResetTokens PasswordResetToken[]
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+// ---------- 4/5. Cursos y estructura ----------
+
+enum CourseLevel {
+  BASICO
+  INTERMEDIO
+  AVANZADO
+}
+
+enum CourseStatus {
+  BORRADOR
+  PUBLICADO
+  FINALIZADO
+  ARCHIVADO
+}
+
+model Category {
+  id      String   @id @default(cuid())
+  name    String   @unique
+  courses Course[]
+}
+
+model Course {
+  id          String       @id @default(cuid())
+  title       String
+  description String
+  imageUrl    String?
+  level       CourseLevel  @default(BASICO)
+  status      CourseStatus @default(BORRADOR)
+  durationHrs Int?
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  categoryId  String?
+  category    Category?    @relation(fields: [categoryId], references: [id])
+
+  teacherId   String
+  teacher     User         @relation("CourseTeacher", fields: [teacherId], references: [id])
+
+  modules       Module[]
+  enrollments   Enrollment[]
+  liveClasses   LiveClass[]
+  announcements Announcement[]
+  folders       Folder[]
+  forumPosts    ForumPost[]
+  certificates  Certificate[]
+  calendarEvents CalendarEvent[]
+}
+
+model Enrollment {
+  id         String   @id @default(cuid())
+  courseId   String
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  studentId  String
+  student    User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  enrolledAt DateTime @default(now())
+  progressPct Int     @default(0)
+  completedAt DateTime?
+
+  @@unique([courseId, studentId])
+}
+
+model Module {
+  id        String   @id @default(cuid())
+  title     String
+  order     Int      @default(0)
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons   Lesson[]
+  quizzes   Quiz[]
+  assignments Assignment[]
+}
+
+enum LessonType {
+  VIDEO
+  PDF
+  PRESENTACION
+  ARCHIVO
+  LINK_EXTERNO
+  ACTIVIDAD
+}
+
+model Lesson {
+  id        String     @id @default(cuid())
+  title     String
+  type      LessonType
+  contentUrl String?
+  body      String?
+  order     Int        @default(0)
+  moduleId  String
+  module    Module     @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  progress  LessonProgress[]
+}
+
+model LessonProgress {
+  id          String   @id @default(cuid())
+  lessonId    String
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  studentId   String
+  student     User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  completed   Boolean  @default(false)
+  completedAt DateTime?
+
+  @@unique([lessonId, studentId])
+}
+
+// ---------- 6. Clases virtuales ----------
+
+enum LiveProvider {
+  ZOOM
+  GOOGLE_MEET
+  MS_TEAMS
+  INTERNO
+}
+
+model LiveClass {
+  id           String       @id @default(cuid())
+  courseId     String
+  course       Course       @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  title        String
+  provider     LiveProvider @default(INTERNO)
+  scheduledAt  DateTime
+  durationMin  Int          @default(60)
+  joinUrl      String?
+  recordingUrl String?
+  materialUrl  String?
+  createdAt    DateTime     @default(now())
+}
+
+// ---------- 7. Biblioteca de contenidos ----------
+
+model Folder {
+  id       String   @id @default(cuid())
+  name     String
+  courseId String?
+  course   Course?  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  parentId String?
+  parent   Folder?  @relation("FolderTree", fields: [parentId], references: [id])
+  children Folder[] @relation("FolderTree")
+  files    LibraryFile[]
+}
+
+enum FileType {
+  PDF
+  WORD
+  EXCEL
+  POWERPOINT
+  VIDEO
+  AUDIO
+  OTRO
+}
+
+model LibraryFile {
+  id        String   @id @default(cuid())
+  name      String
+  type      FileType
+  url       String
+  version   Int      @default(1)
+  folderId  String?
+  folder    Folder?  @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+// ---------- 8. Evaluaciones ----------
+
+enum QuestionType {
+  ALTERNATIVAS
+  VERDADERO_FALSO
+  ABIERTA
+}
+
+model Quiz {
+  id            String   @id @default(cuid())
+  title         String
+  moduleId      String
+  module        Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  timeLimitMin  Int?
+  maxAttempts   Int      @default(1)
+  showResults   Boolean  @default(true)
+  questions     Question[]
+  attempts      QuizAttempt[]
+}
+
+model Question {
+  id       String       @id @default(cuid())
+  quizId   String
+  quiz     Quiz         @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  text     String
+  type     QuestionType
+  options  String?      // JSON: [{id,text,correct}]
+  points   Int          @default(1)
+  order    Int          @default(0)
+  answers  Answer[]
+}
+
+model QuizAttempt {
+  id         String    @id @default(cuid())
+  quizId     String
+  quiz       Quiz      @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  studentId  String
+  student    User      @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  startedAt  DateTime  @default(now())
+  submittedAt DateTime?
+  score      Float?
+  answers    Answer[]
+}
+
+model Answer {
+  id         String      @id @default(cuid())
+  attemptId  String
+  attempt    QuizAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  questionId String
+  question   Question    @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  value      String
+  isCorrect  Boolean?
+  pointsGot  Float?
+}
+
+// ---------- 9. Tareas ----------
+
+model Assignment {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  moduleId    String
+  module      Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  attachmentUrl String?
+  dueDate     DateTime?
+  maxScore    Float    @default(100)
+  createdAt   DateTime @default(now())
+  submissions Submission[]
+}
+
+enum SubmissionStatus {
+  BORRADOR             // el alumno guardó avances pero no ha enviado
+  ENTREGADO            // enviado, a la espera de revisión del docente
+  REQUIERE_CORRECCION  // el docente pidió corregir y reenviar
+  APROBADO             // calificado y aprobado
+}
+
+model Submission {
+  id           String           @id @default(cuid())
+  assignmentId String
+  assignment   Assignment       @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  studentId    String
+  student      User             @relation("Submitter", fields: [studentId], references: [id], onDelete: Cascade)
+  fileUrl      String?
+  comment      String?
+  status       SubmissionStatus @default(BORRADOR)
+  score        Float?
+  feedback     String?
+  gradedById   String?
+  gradedBy     User?            @relation("Grader", fields: [gradedById], references: [id])
+  submittedAt  DateTime?
+  gradedAt     DateTime?
+
+  @@unique([assignmentId, studentId])
+}
+
+// ---------- 11. Certificados ----------
+
+model Certificate {
+  id            String   @id @default(cuid())
+  courseId      String
+  course        Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  studentId     String
+  student       User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  code          String   @unique
+  issuedAt      DateTime @default(now())
+  pdfUrl        String?
+
+  @@unique([courseId, studentId])
+}
+
+// ---------- 12. Comunicación ----------
+
+model Announcement {
+  id        String   @id @default(cuid())
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  title     String
+  body      String
+  createdAt DateTime @default(now())
+}
+
+model Message {
+  id          String   @id @default(cuid())
+  senderId    String
+  sender      User     @relation("Sender", fields: [senderId], references: [id])
+  recipientId String
+  recipient   User     @relation("Recipient", fields: [recipientId], references: [id])
+  body        String
+  readAt      DateTime?
+  createdAt   DateTime @default(now())
+}
+
+model ForumPost {
+  id        String     @id @default(cuid())
+  courseId  String
+  course    Course     @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User       @relation(fields: [authorId], references: [id])
+  parentId  String?
+  parent    ForumPost? @relation("ForumTree", fields: [parentId], references: [id])
+  replies   ForumPost[] @relation("ForumTree")
+  body      String
+  createdAt DateTime   @default(now())
+}
+
+enum NotificationType {
+  ANUNCIO
+  TAREA
+  CALIFICACION
+  MENSAJE
+  CLASE
+  CERTIFICADO
+}
+
+model Notification {
+  id        String            @id @default(cuid())
+  userId    String
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      NotificationType
+  title     String
+  body      String
+  link      String?
+  readAt    DateTime?
+  createdAt DateTime          @default(now())
+}
+
+// ---------- 13. Calendario ----------
+
+/**
+ * Evento manual del calendario (aparte de las clases en vivo y las fechas
+ * límite de tareas, que ya se calculan solas). Lo crea un docente o el
+ * administrador; puede ser general o de un curso puntual.
+ */
+model CalendarEvent {
+  id        String   @id @default(cuid())
+  title     String
+  date      DateTime
+  courseId  String?
+  course    Course?  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
