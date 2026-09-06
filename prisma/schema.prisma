@@ -8,11 +8,11 @@ generator client {
 }
 
 datasource db {
-  // SQLite para desarrollo local. Al desplegar a un host que necesite
-  // Postgres (Neon, Supabase, Vercel Postgres...), cambiar provider a
-  // "postgresql" y añadir DIRECT_URL en el entorno de producción.
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  // Postgres (Neon), usado tanto en desarrollo como en producción
+  // (Cloudflare Workers se conecta a la misma base vía Hyperdrive).
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 // ---------- 2. Usuarios y roles ----------
