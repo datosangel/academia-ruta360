@@ -36,7 +36,7 @@ export function LandingShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-white">
-      <header className="sticky top-0 z-40 flex items-center justify-between border-b border-slate-200 bg-white/95 px-4 py-2 backdrop-blur md:px-8">
+      <header className="sticky top-0 z-40 flex items-center justify-between border-b border-slate-200 bg-white px-4 py-2 md:px-8">
         <div className="flex items-center gap-3">
           <button
             onClick={() => setOpen(true)}

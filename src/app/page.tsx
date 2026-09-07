@@ -34,7 +34,7 @@ export default async function HomePage() {
         <span className="animate-hero-blob-reverse pointer-events-none absolute -right-10 top-32 h-32 w-32 rounded-[45%] bg-[#3BB546]/15 blur-2xl md:h-52 md:w-52" />
         <span className="animate-hero-blob pointer-events-none absolute bottom-0 left-1/3 h-24 w-24 rounded-[50%] bg-amber-200/40 blur-2xl md:h-40 md:w-40" />
 
-        <div className="relative mx-auto max-w-[480px] px-6 pt-14 text-center md:pt-20">
+        <div className="relative mx-auto max-w-[480px] px-6 pt-16 text-center md:pt-24">
           <Reveal delay={0.1}>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-[#013C9A]/10 px-4 py-1.5 text-xs font-semibold text-[#013C9A] md:text-sm">
               <span aria-hidden>🩺</span> Academia Ruta 360
