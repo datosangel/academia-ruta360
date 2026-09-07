@@ -57,17 +57,17 @@ export async function AvailableCourses() {
   if (courses.length === 0) return null;
 
   return (
-    <section id="cursos-disponibles" className="mx-auto max-w-[1000px] px-4 py-12 md:px-8">
+    <section id="cursos-disponibles" className="mx-auto max-w-[1200px] px-5 py-16 md:px-8 md:py-20">
       <Reveal>
-        <h2 className="text-2xl font-semibold text-[#0D212C] md:text-3xl">
-          Áreas de preparación
-        </h2>
-        <p className="mt-1 text-lg text-slate-600 md:text-xl">
-          Cursos disponibles
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#3BB546]">
+          Catálogo
         </p>
+        <h2 className="mt-2 text-[30px] font-extrabold leading-[1.1] tracking-tight text-[#0D212C] md:text-[40px]">
+          Cursos disponibles
+        </h2>
       </Reveal>
 
-      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+      <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
         {courses.map((course, i) => {
           const style = course.category
             ? (CATEGORY_STYLE[course.category.name] ?? DEFAULT_CATEGORY_STYLE)

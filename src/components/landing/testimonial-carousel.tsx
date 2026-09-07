@@ -80,14 +80,14 @@ export function TestimonialCarousel() {
 
   return (
     <section className="w-full py-20">
-      <div className="mb-10 px-6 md:ml-auto md:max-w-4xl">
+      <div className="mx-auto mb-10 w-full max-w-[1200px] px-5 md:px-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <Reveal
             as="h2"
             delay={0.1}
-            className="text-[32px] leading-[1.1] tracking-tight text-[#0D212C] md:text-[40px] lg:text-[44px]"
+            className="text-[30px] font-extrabold leading-[1.1] tracking-tight text-[#0D212C] md:text-[40px]"
           >
-            Lo que dicen <span className="font-accent">nuestros alumnos</span>
+            Lo que dicen nuestros alumnos
           </Reveal>
 
           <Reveal delay={0.2} className="flex items-center gap-2">

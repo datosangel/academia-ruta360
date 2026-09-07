@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { AvailableCourses } from "@/components/landing/available-courses";
-import { BottomNav } from "@/components/landing/bottom-nav";
 import { CourseMarquee } from "@/components/landing/course-marquee";
 import { FeaturedCourses } from "@/components/landing/featured-courses";
 import { LandingButton } from "@/components/landing/landing-button";
@@ -29,71 +28,99 @@ export default async function HomePage() {
   return (
     <LandingShell>
       {/* ---------- Hero ---------- */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-[#013C9A]/[0.04] to-white">
-        <span className="animate-hero-blob pointer-events-none absolute -left-16 top-8 h-40 w-40 rounded-[40%] bg-[#013C9A]/10 blur-2xl md:h-64 md:w-64" />
-        <span className="animate-hero-blob-reverse pointer-events-none absolute -right-10 top-32 h-32 w-32 rounded-[45%] bg-[#3BB546]/15 blur-2xl md:h-52 md:w-52" />
-        <span className="animate-hero-blob pointer-events-none absolute bottom-0 left-1/3 h-24 w-24 rounded-[50%] bg-amber-200/40 blur-2xl md:h-40 md:w-40" />
+      <section className="relative overflow-hidden bg-gradient-to-b from-[#013C9A]/[0.05] via-white to-white">
+        <span className="animate-hero-blob pointer-events-none absolute -left-24 top-0 h-64 w-64 rounded-[40%] bg-[#013C9A]/10 blur-3xl md:h-96 md:w-96" />
+        <span className="animate-hero-blob-reverse pointer-events-none absolute -right-20 top-24 h-56 w-56 rounded-[45%] bg-[#3BB546]/15 blur-3xl md:h-80 md:w-80" />
+        <span className="animate-hero-blob pointer-events-none absolute bottom-8 left-1/2 h-40 w-40 -translate-x-1/2 rounded-[50%] bg-amber-200/30 blur-3xl md:h-56 md:w-56" />
 
-        <div className="relative mx-auto max-w-[480px] px-6 pt-16 text-center md:pt-24">
-          <Reveal delay={0.1}>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#013C9A]/10 px-4 py-1.5 text-xs font-semibold text-[#013C9A] md:text-sm">
-              <span aria-hidden>🩺</span> Academia Ruta 360
-            </span>
-          </Reveal>
+        <div className="relative mx-auto max-w-[1200px] px-5 pb-20 pt-16 md:px-8 md:pb-28 md:pt-24">
+          <div className="mx-auto max-w-3xl text-center">
+            <Reveal delay={0.1}>
+              <span className="inline-flex items-center gap-2 rounded-full border border-[#013C9A]/15 bg-[#013C9A]/[0.06] px-4 py-1.5 text-xs font-semibold tracking-wide text-[#013C9A] md:text-sm">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#3BB546]" />
+                Preparación ENCAPS–SERUMS
+              </span>
+            </Reveal>
 
-          <Reveal delay={0.2}>
-            <h1 className="mt-5 text-[38px] font-extrabold leading-[1.08] tracking-tight text-[#0D212C] md:text-[50px] lg:text-[56px]">
-              Prepárate con método,
-              <br />
-              no con <span className="text-[#013C9A]">memoria</span>.
-            </h1>
-          </Reveal>
-
-          <Reveal delay={0.3}>
-            <p className="mt-4 text-sm text-slate-500 md:text-base">
-              Preparación para el ENCAPS–SERUMS: conocimiento, experiencia e
-              innovación.
-            </p>
-          </Reveal>
-
-          <Reveal delay={0.4}>
-            <div className="mt-6 flex flex-col gap-4 text-left text-sm leading-relaxed text-slate-600 md:mt-8 md:text-base">
-              <p>
-                Somos una comunidad académica enfocada en acompañar a los
-                profesionales de la salud en su preparación para el
-                ENCAPS–SERUMS, con conocimiento, práctica y evaluación
-                continua.
-              </p>
-              <p className="font-semibold text-[#0D212C]">
-                Te acompañamos desde el inicio hasta el proceso de adjudicación.
-              </p>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.5}>
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center md:mt-8 md:gap-4">
-              <LandingButton href="/registro">
-                Empezar mi preparación
-              </LandingButton>
-              <LandingButton href="/login" variant="secondary">
-                Ya tengo cuenta
-              </LandingButton>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.6}>
-            <div className="mt-8 flex flex-wrap justify-center gap-2 pb-14 md:pb-20">
-              {[
-                { icon: "🩺", label: "Áreas del ENCAPS" },
-                { icon: "📚", label: "Contenido por semanas" },
-                { icon: "📊", label: "Evaluación continua" },
-              ].map((item) => (
-                <span
-                  key={item.label}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-                >
-                  <span aria-hidden>{item.icon}</span> {item.label}
+            <Reveal delay={0.2}>
+              <h1 className="mt-6 text-[42px] font-extrabold leading-[1.05] tracking-[-0.03em] text-[#0D212C] md:text-[64px] lg:text-[76px]">
+                Prepárate con método,
+                <br className="hidden sm:block" /> no con{" "}
+                <span className="relative whitespace-nowrap text-[#013C9A]">
+                  memoria
+                  <svg
+                    viewBox="0 0 300 12"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                    className="absolute -bottom-1 left-0 h-2 w-full text-[#3BB546] md:-bottom-2 md:h-3"
+                  >
+                    <path
+                      d="M2 8c60-5 120-6 180-4s80 3 116 1"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="6"
+                      strokeLinecap="round"
+                    />
+                  </svg>
                 </span>
+                .
+              </h1>
+            </Reveal>
+
+            <Reveal delay={0.3}>
+              <p className="mx-auto mt-7 max-w-xl text-base leading-relaxed text-slate-600 md:mt-8 md:text-lg">
+                Acompañamos a los profesionales de la salud con conocimiento,
+                práctica y evaluación continua —{" "}
+                <span className="font-semibold text-[#0D212C]">
+                  desde el primer día hasta la adjudicación.
+                </span>
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.4}>
+              <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:justify-center md:gap-4">
+                <LandingButton href="/registro" className="px-8 py-3.5 text-base">
+                  Empezar mi preparación
+                </LandingButton>
+                <LandingButton
+                  href="/login"
+                  variant="secondary"
+                  className="px-8 py-3.5 text-base"
+                >
+                  Ya tengo cuenta
+                </LandingButton>
+              </div>
+            </Reveal>
+          </div>
+
+          <Reveal delay={0.55}>
+            <div className="mx-auto mt-14 grid max-w-3xl grid-cols-1 gap-3 sm:grid-cols-3 md:mt-16">
+              {[
+                {
+                  title: "Áreas del ENCAPS",
+                  description: "Salud pública, gestión, cuidado integral e investigación.",
+                },
+                {
+                  title: "Contenido por semanas",
+                  description: "Videos, materiales y actividades ordenados de principio a fin.",
+                },
+                {
+                  title: "Evaluación continua",
+                  description: "Simulacros y retroalimentación de cada pregunta que fallas.",
+                },
+              ].map((item) => (
+                <div
+                  key={item.title}
+                  className="group rounded-2xl border border-slate-200/80 bg-white/70 p-5 text-left backdrop-blur transition duration-300 hover:-translate-y-1 hover:border-[#013C9A]/25 hover:shadow-lg hover:shadow-[#013C9A]/5"
+                >
+                  <span className="block h-1 w-8 rounded-full bg-[#3BB546] transition-all duration-300 group-hover:w-14" />
+                  <p className="mt-4 text-sm font-bold text-[#0D212C]">
+                    {item.title}
+                  </p>
+                  <p className="mt-1.5 text-[13px] leading-relaxed text-slate-500">
+                    {item.description}
+                  </p>
+                </div>
               ))}
             </div>
           </Reveal>
@@ -109,7 +136,6 @@ export default async function HomePage() {
       <FeaturedCourses />
       <PartnerSection />
       <LandingFooter />
-      <BottomNav />
     </LandingShell>
   );
 }

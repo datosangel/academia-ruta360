@@ -1,76 +1,85 @@
+import Image from "next/image";
 import Link from "next/link";
-import { LandingButton } from "@/components/landing/landing-button";
 
-const LINKS = [
-  [
-    { label: "Cursos disponibles", href: "#cursos-disponibles" },
-    { label: "Quiénes somos", href: "#nosotros" },
-    { label: "Áreas del examen", href: "#areas" },
-  ],
-  [
-    { label: "Crear cuenta", href: "/registro" },
-    { label: "Iniciar sesión", href: "/login" },
-    { label: "Recuperar acceso", href: "/recuperar-password" },
-  ],
+const COLUMNS = [
+  {
+    title: "Plataforma",
+    links: [
+      { label: "Cursos disponibles", href: "/#cursos-disponibles" },
+      { label: "Quiénes somos", href: "/#nosotros" },
+      { label: "Áreas del examen", href: "/#areas" },
+    ],
+  },
+  {
+    title: "Tu cuenta",
+    links: [
+      { label: "Crear cuenta", href: "/registro" },
+      { label: "Iniciar sesión", href: "/login" },
+      { label: "Recuperar acceso", href: "/recuperar-password" },
+    ],
+  },
 ];
 
 export function LandingFooter() {
   return (
-    <>
-      <footer className="mx-auto w-full max-w-[1200px] px-6 py-12">
-        <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
+    <footer className="border-t border-slate-200 bg-slate-50/60">
+      <div className="mx-auto w-full max-w-[1200px] px-5 py-14 md:px-8 md:py-16">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
-            <LandingButton href="/registro">
-              Empezar mi preparación
-            </LandingButton>
-            <p className="mt-4 max-w-xs text-sm text-[#051A24]/70">
-              Acompañamos tu preparación desde el inicio hasta el proceso de
-              adjudicación.
+            <div className="flex items-center gap-2.5">
+              <Image
+                src="/logo-academia-ruta360.jpg"
+                alt="Academia Ruta 360"
+                width={40}
+                height={40}
+                className="h-10 w-10 rounded-lg object-contain"
+              />
+              <span className="text-[15px] font-bold tracking-tight text-[#0D212C]">
+                Academia <span className="text-[#013C9A]">Ruta 360</span>
+              </span>
+            </div>
+
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-600">
+              Acompañamos tu preparación para el ENCAPS–SERUMS desde el inicio
+              hasta el proceso de adjudicación.
             </p>
+
+            <Link
+              href="/registro"
+              className="mt-6 inline-flex rounded-full bg-[#013C9A] px-6 py-3 text-sm font-semibold text-white transition duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#013C9A]/25 active:translate-y-0"
+            >
+              Empezar mi preparación
+            </Link>
           </div>
 
-          <div className="flex gap-8">
-            <svg
-              viewBox="0 0 24 24"
-              width="20"
-              height="20"
-              fill="none"
-              stroke="#051A24"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="mt-1 shrink-0"
-              aria-hidden="true"
-            >
-              <path d="M7 17 17 7M7 7h10v10" />
-            </svg>
-
-            {LINKS.map((column, i) => (
-              <ul key={i} className="flex flex-col gap-2">
-                {column.map((link) => (
+          {COLUMNS.map((column) => (
+            <div key={column.title}>
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">
+                {column.title}
+              </p>
+              <ul className="mt-4 flex flex-col gap-3">
+                {column.links.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-base text-[#051A24] transition hover:opacity-70"
+                      className="text-sm text-slate-600 transition hover:text-[#013C9A]"
                     >
                       {link.label}
                     </Link>
                   </li>
                 ))}
               </ul>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
-      </footer>
 
-      <div className="mx-auto w-full max-w-[1200px] px-6 py-4 pb-28">
-        <div className="flex flex-col gap-1 text-sm text-[#051A24] sm:flex-row sm:justify-between">
-          <span className="font-medium">Academia Ruta 360</span>
-          <span className="text-[#051A24]/60">
+        <div className="mt-12 flex flex-col gap-1 border-t border-slate-200 pt-6 text-sm sm:flex-row sm:items-center sm:justify-between">
+          <span className="font-medium text-[#0D212C]">Academia Ruta 360</span>
+          <span className="text-slate-500">
             Conocimiento · Experiencia · Innovación
           </span>
         </div>
       </div>
-    </>
+    </footer>
   );
 }

@@ -28,15 +28,24 @@ const FEATURED = [
 
 export function FeaturedCourses() {
   return (
-    <section id="areas" className="mx-auto max-w-[1200px] px-6 py-12">
-      <div className="flex flex-col gap-16 md:gap-20">
+    <section id="areas" className="mx-auto max-w-[1200px] px-5 py-16 md:px-8 md:py-20">
+      <Reveal>
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#3BB546]">
+          Áreas del examen
+        </p>
+        <h2 className="mt-2 max-w-2xl text-[30px] font-extrabold leading-[1.1] tracking-tight text-[#0D212C] md:text-[40px]">
+          Lo que vas a dominar antes de rendir
+        </h2>
+      </Reveal>
+
+      <div className="mt-12 flex flex-col gap-16 md:gap-20">
         {FEATURED.map((course, i) => (
           <Reveal key={course.title} delay={0.1 * (i + 1)}>
-            <div className="ml-20 md:ml-28">
-              <h3 className="font-accent text-2xl font-semibold text-[#013C9A] md:text-3xl">
+            <div>
+              <h3 className="text-2xl font-bold text-[#013C9A] md:text-3xl">
                 {course.title}
               </h3>
-              <p className="mt-1 text-sm text-[#051A24]/70 md:text-base">
+              <p className="mt-2 max-w-2xl text-sm text-slate-600 md:text-base">
                 {course.description}
               </p>
             </div>
