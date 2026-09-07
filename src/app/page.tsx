@@ -11,6 +11,7 @@ import { PartnerSection } from "@/components/landing/partner-section";
 import { PlansSection } from "@/components/landing/plans-section";
 import { QuoteSection } from "@/components/landing/quote-section";
 import { Reveal } from "@/components/landing/reveal";
+import { StatsBar } from "@/components/landing/stats-bar";
 import { TestimonialCarousel } from "@/components/landing/testimonial-carousel";
 
 const ROLE_HOME: Record<string, string> = {
@@ -41,7 +42,7 @@ export default async function HomePage() {
           </Reveal>
 
           <Reveal delay={0.2}>
-            <h1 className="mt-5 text-[34px] font-bold leading-[1.15] tracking-tight text-[#0D212C] md:text-[44px] lg:text-[48px]">
+            <h1 className="mt-5 text-[38px] font-extrabold leading-[1.08] tracking-tight text-[#0D212C] md:text-[50px] lg:text-[56px]">
               Prepárate con método,
               <br />
               no con <span className="text-[#013C9A]">memoria</span>.
@@ -99,6 +100,7 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <StatsBar />
       <AvailableCourses />
       <CourseMarquee />
       <QuoteSection />

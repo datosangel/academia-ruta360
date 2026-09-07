@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { COURSE_TILES, unsplashUrl } from "@/components/landing/course-tiles";
+import { Reveal } from "@/components/landing/reveal";
 
 type Trail = {
   id: number;
@@ -86,25 +87,27 @@ export function PartnerSection() {
         ))}
 
         <div className="relative z-10 flex flex-col items-center px-6">
-          <h2 className="font-accent text-center text-[40px] leading-[1.05] text-[#013C9A] md:text-[56px] lg:text-[68px]">
+          <Reveal as="h2" className="font-accent text-center text-[40px] leading-[1.05] text-[#013C9A] md:text-[56px] lg:text-[68px]">
             Juntos rumbo a tu
             <br />
             <span className="text-[#3BB546]">plaza remunerada</span>
-          </h2>
+          </Reveal>
 
-          <Link
-            href="/registro"
-            className="shadow-btn-primary mt-12 inline-flex items-center gap-3 rounded-full bg-[#013C9A] py-2 pl-2 pr-7 text-sm font-medium text-white transition hover:brightness-110 active:translate-y-px"
-          >
-            <Image
-              src="/logo-academia-ruta360.jpg"
-              alt=""
-              width={40}
-              height={40}
-              className="h-10 w-10 rounded-full bg-white object-contain"
-            />
-            Empezar mi preparación
-          </Link>
+          <Reveal delay={0.15}>
+            <Link
+              href="/registro"
+              className="shadow-btn-primary mt-12 inline-flex items-center gap-3 rounded-full bg-[#013C9A] py-2 pl-2 pr-7 text-sm font-medium text-white transition hover:-translate-y-0.5 hover:brightness-110 active:translate-y-px"
+            >
+              <Image
+                src="/logo-academia-ruta360.jpg"
+                alt=""
+                width={40}
+                height={40}
+                className="h-10 w-10 rounded-full bg-white object-contain"
+              />
+              Empezar mi preparación
+            </Link>
+          </Reveal>
         </div>
       </div>
     </section>

@@ -53,7 +53,9 @@ export function QuoteSection() {
   const { ref, offset } = useParallax<HTMLDivElement>();
 
   return (
-    <section className="mx-auto max-w-2xl px-6 py-12 text-center">
+    <section className="relative mx-auto max-w-2xl overflow-hidden px-6 py-12 text-center">
+      <span className="animate-hero-blob-reverse pointer-events-none absolute -right-14 top-4 h-28 w-28 rounded-[45%] bg-[#3BB546]/10 blur-2xl md:h-44 md:w-44" />
+      <span className="animate-hero-blob pointer-events-none absolute -left-10 bottom-10 h-24 w-24 rounded-[40%] bg-[#013C9A]/10 blur-2xl md:h-36 md:w-36" />
       <Reveal delay={0.1} className="flex justify-center">
         <svg
           viewBox="0 0 24 24"
