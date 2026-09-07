@@ -8,7 +8,6 @@ import { NotificationBell } from "@/components/notification-bell";
 import {
   IconAyuda,
   IconCalendario,
-  IconCertificado,
   IconChat,
   IconConfiguracion,
   IconCursos,
@@ -62,18 +61,11 @@ function navFor(role: string): NavItem[] {
     });
   }
   if (role === "ALUMNO") {
-    items.push(
-      {
-        href: "/alumno/certificados",
-        label: "Certificados",
-        icon: <IconCertificado className={ICON_CLASS} />,
-      },
-      {
-        href: "/alumno/portafolio",
-        label: "Portafolio",
-        icon: <IconPortafolio className={ICON_CLASS} />,
-      }
-    );
+    items.push({
+      href: "/alumno/portafolio",
+      label: "Portafolio",
+      icon: <IconPortafolio className={ICON_CLASS} />,
+    });
   }
 
   items.push(

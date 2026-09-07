@@ -25,7 +25,6 @@ type Profile = {
     enrolledAt: string;
     completedAt: string | null;
   }[];
-  certificates: { code: string; courseTitle: string; issuedAt: string }[];
   coursesTaught: { id: string; title: string; status: string; studentCount: number }[];
   approvedTasks: number;
   quizzesTaken: number;
@@ -84,7 +83,7 @@ export function UserProfile({ data, backHref }: { data: Profile; backHref: strin
 
       {data.role === "ALUMNO" && (
         <>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
               <p className="text-xs text-slate-500">Cursos</p>
               <p className="mt-0.5 text-lg font-bold">{data.enrollments.length}</p>
@@ -96,10 +95,6 @@ export function UserProfile({ data, backHref }: { data: Profile; backHref: strin
             <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
               <p className="text-xs text-slate-500">Trabajos aprobados</p>
               <p className="mt-0.5 text-lg font-bold">{data.approvedTasks}</p>
-            </div>
-            <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-              <p className="text-xs text-slate-500">Certificados</p>
-              <p className="mt-0.5 text-lg font-bold">{data.certificates.length}</p>
             </div>
           </div>
 
@@ -132,20 +127,6 @@ export function UserProfile({ data, backHref }: { data: Profile; backHref: strin
               )}
             </ul>
           </div>
-
-          {data.certificates.length > 0 && (
-            <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
-              <p className="border-b border-slate-100 px-5 py-3 font-medium">Certificados</p>
-              <ul className="divide-y divide-slate-100">
-                {data.certificates.map((c) => (
-                  <li key={c.code} className="flex items-center justify-between px-5 py-3 text-sm">
-                    <span>{c.courseTitle}</span>
-                    <span className="font-mono text-xs text-green-700">{c.code}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
         </>
       )}
 

@@ -20,8 +20,6 @@ export default auth((req) => {
     pathname === "/login" ||
     pathname === "/registro" ||
     pathname === "/recuperar-password" ||
-    // Verificación pública de certificados: no requiere sesión.
-    pathname.startsWith("/validar/") ||
     pathname.startsWith("/api/auth");
 
   if (isPublic) return NextResponse.next();

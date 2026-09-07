@@ -14,7 +14,7 @@ export default async function AlumnoDashboard() {
   const session = await auth();
   const studentId = session!.user.id;
 
-  const [courses, enrollments, pendingAssignments, certificateCount, correctionCount] = await Promise.all([
+  const [courses, enrollments, pendingAssignments, correctionCount] = await Promise.all([
     // Todos los cursos publicados de la academia, no solo en los que ya
     // estás matriculado: así el alumno ve toda la oferta disponible.
     prisma.course.findMany({
@@ -36,7 +36,6 @@ export default async function AlumnoDashboard() {
         submissions: { none: { studentId } },
       },
     }),
-    prisma.certificate.count({ where: { studentId } }),
     prisma.submission.count({ where: { studentId, status: "REQUIERE_CORRECCION" } }),
   ]);
 
@@ -54,11 +53,10 @@ export default async function AlumnoDashboard() {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <StatCard label="Cursos inscritos" value={enrollments.length} />
         <StatCard label="Progreso promedio" value={`${Math.round(avgProgress)}%`} />
         <StatCard label="Actividades pendientes" value={pendingAssignments} />
-        <StatCard label="Certificados obtenidos" value={certificateCount} />
         <StatCard label="Requieren corrección" value={correctionCount} />
       </div>
 

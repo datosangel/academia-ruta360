@@ -66,15 +66,6 @@ export function IconUsuarios(props: { className?: string }) {
   );
 }
 
-export function IconCertificado(props: { className?: string }) {
-  return (
-    <svg {...base} {...props}>
-      <circle cx="12" cy="9" r="5.5" />
-      <path d="M8.5 13.5 7 21l5-2.2L17 21l-1.5-7.5" />
-    </svg>
-  );
-}
-
 export function IconTareas(props: { className?: string }) {
   return (
     <svg {...base} {...props}>

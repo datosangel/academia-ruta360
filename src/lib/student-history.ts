@@ -35,7 +35,7 @@ export async function loadStudentHistory(courseId: string, studentId: string) {
   ]);
   if (!course || !student || !enrollment) return null;
 
-  const [quizAttempts, submissions, certificate] = await Promise.all([
+  const [quizAttempts, submissions] = await Promise.all([
     prisma.quizAttempt.findMany({
       where: { studentId, quiz: { module: { courseId } } },
       include: { quiz: { select: { title: true } } },
@@ -46,7 +46,6 @@ export async function loadStudentHistory(courseId: string, studentId: string) {
       include: { assignment: { select: { title: true, maxScore: true } } },
       orderBy: { submittedAt: "desc" },
     }),
-    prisma.certificate.findUnique({ where: { courseId_studentId: { courseId, studentId } } }),
   ]);
 
   return {
@@ -85,8 +84,5 @@ export async function loadStudentHistory(courseId: string, studentId: string) {
       feedback: s.feedback,
       submittedAt: s.submittedAt?.toISOString() ?? null,
     })),
-    certificate: certificate
-      ? { code: certificate.code, issuedAt: certificate.issuedAt.toISOString() }
-      : null,
   };
 }

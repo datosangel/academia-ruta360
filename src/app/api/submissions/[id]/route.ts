@@ -3,7 +3,6 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { canManageCourse } from "@/lib/course-access";
 import { notify } from "@/lib/notifications";
-import { checkAndIssueCertificate } from "@/lib/certificates";
 
 const schema = z.discriminatedUnion("action", [
   z.object({
@@ -84,8 +83,6 @@ export async function PATCH(
       body: `"${submission.assignment.title}" (${submission.assignment.module.course.title}): ${score} / ${submission.assignment.maxScore}`,
       link: `/alumno/cursos/${courseId}?tarea=${submission.assignmentId}`,
     });
-
-    await checkAndIssueCertificate(courseId, submission.studentId);
   } else {
     await prisma.submission.update({
       where: { id },

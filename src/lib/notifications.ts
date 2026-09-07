@@ -7,13 +7,7 @@ import { prisma } from "@/lib/prisma";
  */
 export async function notify(params: {
   userId: string;
-  type:
-    | "ANUNCIO"
-    | "TAREA"
-    | "CALIFICACION"
-    | "MENSAJE"
-    | "CLASE"
-    | "CERTIFICADO";
+  type: "ANUNCIO" | "TAREA" | "CALIFICACION" | "MENSAJE" | "CLASE";
   title: string;
   body: string;
   link?: string;

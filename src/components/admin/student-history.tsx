@@ -43,7 +43,6 @@ type History = {
     feedback: string | null;
     submittedAt: string | null;
   }[];
-  certificate: { code: string; issuedAt: string } | null;
 };
 
 export function StudentHistory({ data, backHref }: { data: History; backHref: string }) {
@@ -52,6 +51,7 @@ export function StudentHistory({ data, backHref }: { data: History; backHref: st
     (s, w) => s + w.lessons.filter((l) => l.completed).length,
     0
   );
+  const approvedTasks = data.submissions.filter((s) => s.status === "APROBADO").length;
 
   return (
     <div className="max-w-3xl space-y-5">
@@ -81,14 +81,8 @@ export function StudentHistory({ data, backHref }: { data: History; backHref: st
           </p>
         </div>
         <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-          <p className="text-xs text-slate-500">Certificado</p>
-          <p className="mt-0.5 text-sm font-semibold">
-            {data.certificate ? (
-              <span className="text-green-700">{data.certificate.code}</span>
-            ) : (
-              <span className="text-slate-400">Aún no</span>
-            )}
-          </p>
+          <p className="text-xs text-slate-500">Trabajos aprobados</p>
+          <p className="mt-0.5 text-lg font-bold">{approvedTasks}</p>
         </div>
       </div>
 

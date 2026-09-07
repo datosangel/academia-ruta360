@@ -1,6 +1,6 @@
 // Aula Virtual — modelo de datos
 // Cubre: usuarios/roles, cursos, módulos y contenidos, clases virtuales,
-// biblioteca de archivos, evaluaciones, tareas, seguimiento, certificados,
+// biblioteca de archivos, evaluaciones, tareas, seguimiento,
 // comunicación (mensajería, anuncios, foro).
 
 generator client {
@@ -47,7 +47,6 @@ model User {
   enrollments       Enrollment[]
   submissions       Submission[]       @relation("Submitter")
   quizAttempts      QuizAttempt[]
-  certificates      Certificate[]
   lessonProgress    LessonProgress[]
 
   // Comunicación
@@ -115,7 +114,6 @@ model Course {
   announcements Announcement[]
   folders       Folder[]
   forumPosts    ForumPost[]
-  certificates  Certificate[]
   calendarEvents CalendarEvent[]
 }
 
@@ -329,21 +327,6 @@ model Submission {
   @@unique([assignmentId, studentId])
 }
 
-// ---------- 11. Certificados ----------
-
-model Certificate {
-  id            String   @id @default(cuid())
-  courseId      String
-  course        Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  studentId     String
-  student       User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  code          String   @unique
-  issuedAt      DateTime @default(now())
-  pdfUrl        String?
-
-  @@unique([courseId, studentId])
-}
-
 // ---------- 12. Comunicación ----------
 
 model Announcement {
@@ -387,7 +370,6 @@ enum NotificationType {
   CALIFICACION
   MENSAJE
   CLASE
-  CERTIFICADO
 }
 
 model Notification {

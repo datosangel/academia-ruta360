@@ -29,9 +29,9 @@ const FEATURE_BOXES = [
     bg: "bg-amber-50",
   },
   {
-    icon: "🎓",
-    title: "Certificado",
-    description: "Se emite automáticamente al completar el curso.",
+    icon: "🩺",
+    title: "Acompañamiento docente",
+    description: "Foro, chat y clases en vivo con tu docente durante todo el curso.",
     bg: "bg-rose-50",
   },
 ] as const;

@@ -31,7 +31,6 @@ const TYPE_ICON: Record<string, string> = {
   CALIFICACION: "🏆",
   MENSAJE: "💬",
   CLASE: "🎥",
-  CERTIFICADO: "🎓",
 };
 
 export function NotificationBell({

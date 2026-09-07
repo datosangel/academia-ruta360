@@ -14,10 +14,10 @@ const SECTIONS = [
     href: "/alumno",
   },
   {
-    title: "Cómo obtener tu certificado",
+    title: "Cómo ver tu portafolio",
     description:
-      "Al completar el 100% de un curso, el certificado se emite automáticamente en la sección Certificados.",
-    href: "/alumno/certificados",
+      "En Portafolio encuentras los cursos que completaste y los trabajos que tu docente aprobó.",
+    href: "/alumno/portafolio",
   },
   {
     title: "Cómo escribir a tu docente",

@@ -84,7 +84,7 @@ export default async function HomePage() {
             <div className="mt-8 flex flex-wrap justify-center gap-2 pb-14 md:pb-20">
               {[
                 { icon: "🩺", label: "Áreas del ENCAPS" },
-                { icon: "🎓", label: "Certificado al terminar" },
+                { icon: "📚", label: "Contenido por semanas" },
                 { icon: "📊", label: "Evaluación continua" },
               ].map((item) => (
                 <span

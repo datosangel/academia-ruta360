@@ -18,16 +18,11 @@ export async function loadUserProfile(userId: string) {
   });
   if (!user) return null;
 
-  const [enrollments, certificates, coursesTaught, submissions, quizAttempts] = await Promise.all([
+  const [enrollments, coursesTaught, submissions, quizAttempts] = await Promise.all([
     prisma.enrollment.findMany({
       where: { studentId: userId },
       orderBy: { enrolledAt: "desc" },
       include: { course: { select: { id: true, title: true } } },
-    }),
-    prisma.certificate.findMany({
-      where: { studentId: userId },
-      orderBy: { issuedAt: "desc" },
-      include: { course: { select: { title: true } } },
     }),
     user.role === "DOCENTE"
       ? prisma.course.findMany({
@@ -48,11 +43,6 @@ export async function loadUserProfile(userId: string) {
       progressPct: e.progressPct,
       enrolledAt: e.enrolledAt.toISOString(),
       completedAt: e.completedAt?.toISOString() ?? null,
-    })),
-    certificates: certificates.map((c) => ({
-      code: c.code,
-      courseTitle: c.course.title,
-      issuedAt: c.issuedAt.toISOString(),
     })),
     coursesTaught: coursesTaught.map((c) => ({
       id: c.id,

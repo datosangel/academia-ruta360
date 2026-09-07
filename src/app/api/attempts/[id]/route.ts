@@ -3,7 +3,6 @@ import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { attemptExpired, canManageQuiz, gradeAnswer } from "@/lib/quiz";
-import { checkAndIssueCertificate } from "@/lib/certificates";
 
 const submitSchema = z.object({
   answers: z.record(z.string(), z.string()),
@@ -31,7 +30,7 @@ export async function POST(
   const attempt = await prisma.quizAttempt.findUnique({
     where: { id },
     include: {
-      quiz: { include: { questions: true, module: { select: { courseId: true } } } },
+      quiz: { include: { questions: true } },
     },
   });
   if (!attempt || attempt.studentId !== session.user.id) {
@@ -86,10 +85,6 @@ export async function POST(
     data: { submittedAt: new Date(), score: Math.round(score * 100) / 100 },
   });
 
-  if (!hayAbiertas) {
-    await checkAndIssueCertificate(attempt.quiz.module.courseId, attempt.studentId);
-  }
-
   return NextResponse.json({
     ok: true,
     score: Math.round(score * 100) / 100,
@@ -108,7 +103,7 @@ export async function PATCH(
   const attempt = await prisma.quizAttempt.findUnique({
     where: { id },
     include: {
-      quiz: { include: { questions: true, module: { select: { courseId: true } } } },
+      quiz: { include: { questions: true } },
       answers: true,
     },
   });
@@ -151,8 +146,6 @@ export async function PATCH(
     where: { id },
     data: { score: Math.round(score * 100) / 100 },
   });
-
-  await checkAndIssueCertificate(attempt.quiz.module.courseId, attempt.studentId);
 
   return NextResponse.json({ ok: true, score: Math.round(score * 100) / 100 });
 }
